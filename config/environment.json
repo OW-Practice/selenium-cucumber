@@ -1,0 +1,11 @@
+{
+  "login_creds":{
+    "dev":{
+      "base_url": "https://fa-euth-dev89-saasfademo1.ds-fa.oraclepdemos.com/"
+    },
+    "prod": {
+    },
+    "staging": {
+    }
+  }
+}
