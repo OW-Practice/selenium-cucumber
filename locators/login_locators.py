@@ -7,3 +7,4 @@ class LoginLocators:
     pass_word_field_loc = (By.CSS_SELECTOR, "#password")
     sign_in_button_loc = (By.CSS_SELECTOR, "#btnActive")
     oracle_application_header_loc = (By.CSS_SELECTOR, "#loginTitle+div")
+    oracle_logo_loc = (By.CSS_SELECTOR, "[title='Oracle Logo Home']")

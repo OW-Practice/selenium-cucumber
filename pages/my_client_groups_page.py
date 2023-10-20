@@ -38,5 +38,3 @@ class MyClientGroupPage(BasePage, SynMethods, MyClientGroupsLocators):
         hiring = self.wait_until_element_visible(self.hiring_option_loc, self.long_wait, self.driver)
         self.wait_until_element_clickable(self.hiring_option_loc, self.long_wait, self.driver)
         hiring.click()
-        time.sleep(3)
-
