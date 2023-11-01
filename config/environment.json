@@ -1,0 +1,16 @@
+{
+  "login_creds":{
+    "dev":{
+      "base_url": "https://fa-euth-dev89-saasfademo1.ds-fa.oraclepdemos.com/"
+    },
+    "prod": {
+    },
+    "staging": {
+    },
+    "qa": {
+      "base_url": "https://trello.com/home",
+      "user_name": "amrutha.dasireddy@optimworks.com",
+      "pass_word": "17jan1997@"
+    }
+  }
+}
