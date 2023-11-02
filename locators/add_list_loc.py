@@ -16,6 +16,7 @@ class AddListLocators:
     delete_header_loc = (By.CSS_SELECTOR, "span[class*='header-title']")
     delete_content_loc = (By.CSS_SELECTOR, "div[class*='pop-over-content'] p")
     confirm_delete_button_loc = (By.CSS_SELECTOR, "input[value='Delete']")
-    current_card_name_loc = (By.CSS_SELECTOR, "[class='window-title'] h2")
+    current_card_name_loc = (By.XPATH, "//textarea[contains(@class,'card-detail-title')]")
     current_list_name_loc = (By.CSS_SELECTOR, "[class*='current-list'] a")
+    list_actions_form_loc = (By.XPATH, "//div//following-sibling::div[contains(@class,'pop-over')]")
 
