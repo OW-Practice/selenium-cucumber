@@ -13,7 +13,7 @@ Feature: create board in trello application
     Then Validate the trello header should displayed in home page
     When Click on profile button "Amrutha"
     Then Validate username "Amrutha Dasireddy"
-#
+
   Scenario:Create board and lists and cards under each board and validating board, lists, cards
     Then Validate the trello header should displayed in home page
     Then Validate "YOUR WORKSPACES" section header should displayed in trello home page.
