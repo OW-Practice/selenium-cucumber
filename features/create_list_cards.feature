@@ -64,9 +64,10 @@ Feature: create board in trello application
     When Enter random board name in create board form
     When Click on create button in create board form
     Then Validate randomly created board name is displayed
-    When Create list title "2" and validate list name
-    When Create card with list size "2" and card size "2" and enter card name
-    Then Validate cards based on list size "2" and card size "2"
+    When Create list title "1" and validate list name
+    When Create card with list size "1" and card size "1" and enter card name
+    Then Validate cards based on list size "1" and card size "1"
+    When Click on the card name "1"  and "1" and add "Description" and "this card is created by faker" in the card details form
     When Click on the card and delete "2" and "2" and "Delete card?" and "All actions will be removed"
     When Click on the list menu list size "2" and archive this list "Archive this list"
       | headers           |
