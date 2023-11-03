@@ -46,3 +46,35 @@ def validate_created_cards_under_lists(context,list_size, card_size):
         for j in range(cards_val):
             card = total_card_names[i][j]
             context.list_card.verify_card_name(name_of_list, card)
+
+
+@when(u'Click on the card and delete "{list_size}" and "{card_size}" and "{delete}" and "{delete_content}"')
+def click_on_the_card_and_delete(context,list_size, card_size, delete, delete_content):
+    context.list_card = AddAListCardPage(context.driver)
+    lists_val = int(list_size)
+    cards_val = int(card_size)
+    for i in range(lists_val):
+        name_of_list = list_names[i]
+        for j in range(cards_val):
+            card = total_card_names[i][j]
+            context.list_card.deleting_the_card(name_of_list, card, delete, delete_content)
+
+
+@when(u'Click on the list menu list size "{list_size}" and archive this list "{archive}"')
+def click_on_the_list_menu_and_archive_this_list(context, list_size, archive):
+    lists_val = int(list_size)
+    for i in range(lists_val):
+        name_of_list = list_names[i]
+        context.list_card.click_list_menu_button(name_of_list)
+        for row in context.table:
+            header_text = row['headers']
+            context.list_card.verify_list_actions_and_archive(header_text)
+        context.list_card.click_on_archive_the_list_option(archive)
+
+
+@then(u'Validate deleted lists list size "{list_size}" in the board')
+def validate_deleted_lists_in_the_board(context, list_size):
+    lists_val = int(list_size)
+    for i in range(lists_val):
+        name_of_list = list_names[i]
+        context.list_card.verify_deleted_lists(name_of_list)

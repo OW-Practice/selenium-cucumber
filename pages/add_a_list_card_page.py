@@ -31,7 +31,6 @@ class AddAListCardPage(SynMethods, AddListLocators,ActionChains):
         add_a_card_button.click()
 
     def enter_card_name(self, input_data):
-        time.sleep(3)
         card_name = self.wait_until_element_visible(self.enter_card_title_loc, self.medium_wait, self.driver)
         self.wait_until_element_clickable(self.enter_card_title_loc, self.medium_wait, self.driver)
         card_name.click()
@@ -68,6 +67,7 @@ class AddAListCardPage(SynMethods, AddListLocators,ActionChains):
         self.verify_deleted_card_in_list(list_name, card_value)
 
     def click_on_current_card(self, list_name, card_value):
+        self.driver.refresh()
         loc = (By.XPATH, "//h2[text()='" + list_name + "']//ancestor::div//a[text()='" + card_value + "']")
         current_card = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
         self.wait_until_element_clickable(loc, self.medium_wait, self.driver)
@@ -78,13 +78,18 @@ class AddAListCardPage(SynMethods, AddListLocators,ActionChains):
         card_name = self.is_Element_invisible(loc, self.medium_wait, self.driver)
         assert card_name == True, "deleted card name is displayed"
 
+    def verify_deleted_lists(self, list_name):
+        loc = (By.XPATH, "//h2[text()='" + list_name + "']")
+        list_name = self.is_Element_invisible(loc, self.medium_wait, self.driver)
+        assert list_name == True, "deleted card name is displayed"
+
     def verify_card_details_window(self):
         card_details_window = self.wait_until_element_visible(self.card_details_window_loc, self.medium_wait, self.driver)
         assert card_details_window.is_displayed() == True, "card_details_window is not displayed"
 
     def verify_current_card_name(self, name):
         current_card_name = self.wait_until_element_visible(self.current_card_name_loc, self.medium_wait, self.driver)
-        current_card_name_text = current_card_name.text
+        current_card_name_text = current_card_name.get_attribute("value")
         assert current_card_name_text == name, current_card_name_text + "card name is not matched"
 
     def verify_current_list_name(self, name):
@@ -128,3 +133,21 @@ class AddAListCardPage(SynMethods, AddListLocators,ActionChains):
         assert delete_button.is_displayed() == True, "delete button is not displayed"
         self.wait_until_element_visible(self.confirm_delete_button_loc, self.medium_wait, self.driver)
         delete_button.click()
+
+    def click_list_menu_button(self, list_name):
+        self.driver.refresh()
+        loc = (By.XPATH, "//h2[text()='"+list_name+"']//parent::div//following-sibling::button//span//span")
+        list_menu_button = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(loc, self.medium_wait, self.driver)
+        list_menu_button.click()
+
+    def verify_list_actions_and_archive(self,input):
+        loc = (By.XPATH, "//*[text()='"+input+"']")
+        actions_archive = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
+        assert actions_archive.is_displayed() == True, "actions header and archive of list option is not displayed"
+
+    def click_on_archive_the_list_option(self, input):
+        loc = (By.XPATH, "//*[text()='" + input + "']")
+        archive_option = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(loc, self.medium_wait, self.driver)
+        archive_option.click()
