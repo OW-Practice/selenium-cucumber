@@ -24,7 +24,6 @@ class AddAListCardPage(SynMethods, AddListLocators,ActionChains):
         list_title.send_keys(input)
 
     def click_on_add_a_card_button(self, input):
-        time.sleep(3)
         loc = (By.XPATH, "//h2[text()='" + input + "']//ancestor::div[@data-testid='list']//*[contains(@data-testid,"
                                                    "'add-card')]")
         add_a_card_button = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
@@ -32,7 +31,6 @@ class AddAListCardPage(SynMethods, AddListLocators,ActionChains):
         add_a_card_button.click()
 
     def enter_card_name(self, input_data):
-        time.sleep(3)
         card_name = self.wait_until_element_visible(self.enter_card_title_loc, self.medium_wait, self.driver)
         self.wait_until_element_clickable(self.enter_card_title_loc, self.medium_wait, self.driver)
         card_name.click()
@@ -69,6 +67,7 @@ class AddAListCardPage(SynMethods, AddListLocators,ActionChains):
         self.verify_deleted_card_in_list(list_name, card_value)
 
     def click_on_current_card(self, list_name, card_value):
+        self.driver.refresh()
         loc = (By.XPATH, "//h2[text()='" + list_name + "']//ancestor::div//a[text()='" + card_value + "']")
         current_card = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
         self.wait_until_element_clickable(loc, self.medium_wait, self.driver)
