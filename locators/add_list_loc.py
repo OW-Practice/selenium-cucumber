@@ -19,4 +19,6 @@ class AddListLocators:
     current_card_name_loc = (By.XPATH, "//textarea[contains(@class,'card-detail-title')]")
     current_list_name_loc = (By.CSS_SELECTOR, "[class*='current-list'] a")
     list_actions_form_loc = (By.XPATH, "//div//following-sibling::div[contains(@class,'pop-over')]")
-
+    description_input_loc = (By.XPATH, "//div[contains(@class,'editor-content-area')]//div[@role='textbox']")
+    save_button_loc = (By.CSS_SELECTOR, "//button[text()='Save']")
+    added_description_text_loc = (By.XPATH, "//div[contains(@class,'markeddown')]//p")

@@ -37,7 +37,7 @@ def click_on_add_a_card_button_enter_card_name(context, list_size, card_size):
 
 
 @then(u'Validate cards based on list size "{list_size}" and card size "{card_size}"')
-def validate_created_cards_under_lists(context,list_size, card_size):
+def validate_created_cards_under_lists(context, list_size, card_size):
     context.list_card = AddAListCardPage(context.driver)
     lists_val = int(list_size)
     cards_val = int(card_size)
@@ -49,7 +49,7 @@ def validate_created_cards_under_lists(context,list_size, card_size):
 
 
 @when(u'Click on the card and delete "{list_size}" and "{card_size}" and "{delete}" and "{delete_content}"')
-def click_on_the_card_and_delete(context,list_size, card_size, delete, delete_content):
+def click_on_the_card_and_delete(context, list_size, card_size, delete, delete_content):
     context.list_card = AddAListCardPage(context.driver)
     lists_val = int(list_size)
     cards_val = int(card_size)
@@ -78,3 +78,15 @@ def validate_deleted_lists_in_the_board(context, list_size):
     for i in range(lists_val):
         name_of_list = list_names[i]
         context.list_card.verify_deleted_lists(name_of_list)
+
+
+@when(u'Click on the card name "{list_size}" and "{card_size}" add "{description}" and "{description_text}" in the card details form')
+def click_on_the_card_name_and_add_description(context,list_size, card_size, description, description_text):
+    context.list_card = AddAListCardPage(context.driver)
+    lists_val = int(list_size)
+    cards_val = int(card_size)
+    for i in range(lists_val):
+        name_of_list = list_names[i]
+        for j in range(cards_val):
+            card_name = total_card_names[i][j]
+            context.list_card.click_on_card_and_add_description_to_card(name_of_list, card_name, description, description_text)
