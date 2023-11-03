@@ -2,7 +2,7 @@ from behave import *
 from pages.trello_home_page import TrelloHomePage
 
 
-@then(u"Validate the trello header is displayed")
+@then(u"Validate the trello header should displayed in home page")
 def validate_the_trello_header(context):
     context.home = TrelloHomePage(context.driver)
     context.home.verify_trello_header()
@@ -26,13 +26,13 @@ def click_on_the_trello_header(context):
     context.home.click_on_trello_header()
 
 
-@then(u'Validate the yours workspace section header "{input}" is displayed')
+@then(u'Validate "{input}" section header should displayed in trello home page.')
 def validate_the_yours_workspace_section_header(context,input):
     context.home = TrelloHomePage(context.driver)
     context.home.verify_yours_work_space_section(input)
 
 
-@then(u'Validate the created board names under yours workspace section "{input}" is displayed')
+@then(u'Validate "{input}" should displayed in yours workspace section')
 def validate_the_created_board_names_under_yours_workspace_section(context,input):
     context.home = TrelloHomePage(context.driver)
     context.home.verify_create_board_name(input)
@@ -86,43 +86,43 @@ def validate_close_board_pop_up_is_displayed(context):
     context.home.verify_close_board_pop_up()
 
 
-@then(u'Validate close board header "{input}" is displayed')
+@then(u'Validate "{input}" close header should displayed in delete pop up.')
 def validate_close_board_header_is_displayed(context,input):
     context.home = TrelloHomePage(context.driver)
     context.home.verify_close_board_header(input)
 
 
-@then(u'Validate close board content "{input}" is displayed')
+@then(u'Validate "{input}" close content text should displayed in delete pop up.')
 def validate_close_board_context_is_displayed(context,input):
     context.home = TrelloHomePage(context.driver)
     context.home.verify_close_board_content(input)
 
 
-@then(u"Validate close button is displayed")
+@then(u"Validate close button is displayed in close board pop up")
 def validate_close_button_is_displayed(context):
     context.home = TrelloHomePage(context.driver)
     context.home.verify_close_board_button()
 
 
-@when(u"Click on the close button")
+@when(u"Click on the close button in close board pop up")
 def click_on_the_close_button(context):
     context.home = TrelloHomePage(context.driver)
     context.home.click_on_close_board_button()
 
 
-@then(u'Validate delete board name "{input}" in your work space section')
+@then(u'Validate "{input}" name should not display in your work space section')
 def validate_delete_board_name_in_your_work_space_section(context,input):
     context.home = TrelloHomePage(context.driver)
     context.home.verify_deleted_board_name_should_not_display(input)
 
 
-@then(u"Validate delete random board name in your work space section")
+@then(u"Validate delete random board name should not display in your work space section")
 def validate_delete_board_name_in_your_work_space_section(context):
     context.home = TrelloHomePage(context.driver)
     context.home.verify_deleted_board_name_should_not_display(context.name)
 
 
-@then(u"Validate work space section is displayed")
+@then(u"Validate work space section should displayed in trello home page.")
 def validate_work_space_section_is_displayed(context):
     context.home = TrelloHomePage(context.driver)
     context.home.verify_work_space_section()
