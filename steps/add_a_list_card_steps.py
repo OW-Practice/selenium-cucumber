@@ -1,6 +1,7 @@
 from behave import *
 from pages.add_a_list_card_page import AddAListCardPage
 from faker import Faker
+from pathlib import Path
 
 fake = Faker()
 list_names = []
@@ -80,8 +81,8 @@ def validate_deleted_lists_in_the_board(context, list_size):
         context.list_card.verify_deleted_lists(name_of_list)
 
 
-@when(u'Click on the card name "{list_size}" and "{card_size}" add "{description}" and "{description_text}" in the card details form')
-def click_on_the_card_name_and_add_description(context,list_size, card_size, description, description_text):
+@when(u'Click on the card name "{list_size}" "{card_size}" add "{description}" and "{save}" in the card details form')
+def click_on_the_card_name_and_add_description(context, list_size, card_size, description, save):
     context.list_card = AddAListCardPage(context.driver)
     lists_val = int(list_size)
     cards_val = int(card_size)
@@ -89,4 +90,54 @@ def click_on_the_card_name_and_add_description(context,list_size, card_size, des
         name_of_list = list_names[i]
         for j in range(cards_val):
             card_name = total_card_names[i][j]
-            context.list_card.click_on_card_and_add_description_to_card(name_of_list, card_name, description, description_text)
+            fake = Faker()
+            num_words_to_generate = 3
+            generated_words = [fake.word() for _ in range(num_words_to_generate)]
+            words_as_string = ' '.join(generated_words)
+            context.list_card.click_on_card_and_add_description_to_card(name_of_list, card_name, description, words_as_string, save)
+
+
+@when(u'Click on edit "{edit}" update the description save "{save}" list size "{list_size}" card size "{card_size}"')
+def click_on_the_card_name_and_update_description(context, edit, save, list_size, card_size):
+    context.list_card = AddAListCardPage(context.driver)
+    lists_val = int(list_size)
+    cards_val = int(card_size)
+    for i in range(lists_val):
+        list_name = list_names[i]
+        for j in range(cards_val):
+            card_name = total_card_names[i][j]
+            fake = Faker()
+            num_words_to_generate = 5
+            generated_words = [fake.word() for _ in range(num_words_to_generate)]
+            update_string = ' '.join(generated_words)
+            context.list_card.click_on_card_name_and_update_description(list_name, card_name,edit, update_string, save)
+
+
+@when(u'Click on the attachment of card "{list_size}" "{card_size}" and upload imgage')
+def click_on_the_attachment_and_upload_image(context, list_size, card_size):
+    context.list_card = AddAListCardPage(context.driver)
+    directory_path = str(Path().absolute())
+    file_path = directory_path + "\input_files\image1.png"
+    lists_val = int(list_size)
+    cards_val = int(card_size)
+    for i in range(lists_val):
+        list_name = list_names[i]
+        for j in range(cards_val):
+            card_name = total_card_names[i][j]
+            context.list_card.click_on_attachment_upload_image(list_name, card_name, file_path)
+            context.list_card.verify_success_text()
+            context.list_card.click_on_close_btn()
+            context.list_card.click_on_close_window()
+
+
+@then(u'Validate attached image to card "{list_size}" "{card_size}"')
+def validate_attached_image_to_card(context, list_size, card_size):
+    context.list_card = AddAListCardPage(context.driver)
+    lists_val = int(list_size)
+    cards_val = int(card_size)
+    for i in range(lists_val):
+        list_name = list_names[i]
+        for j in range(cards_val):
+            card_name = total_card_names[i][j]
+            context.list_card.verify_uploaded_image_for_card(card_name)
+

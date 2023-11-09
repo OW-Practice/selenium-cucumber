@@ -3,13 +3,6 @@ Feature: create board in trello application
   Scenario: launch the trello application
     Given Launch the trello application
     Then Validate trello logo
-#    Then Validate all menus are display
-#      | menu_names |
-#      | Features   |
-#      | Solutions  |
-#      | Plans      |
-#      | Pricing    |
-#      | Resources  |
     When Click on log in link
     Then Validate login form
     When Enter username

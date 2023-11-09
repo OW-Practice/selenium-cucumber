@@ -39,3 +39,8 @@ build/
 
 allure_results
 screenshots
+utilities/__pycache__/
+utils/__pycache__/
+geckodriver.log
+locators/__pycache__/
+pages/__pycache__/
