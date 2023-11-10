@@ -113,7 +113,7 @@ def click_on_the_card_name_and_update_description(context, edit, save, list_size
             context.list_card.click_on_card_name_and_update_description(list_name, card_name,edit, update_string, save)
 
 
-@when(u'Click on the attachment of card "{list_size}" "{card_size}" and upload imgage')
+@when(u'Click on the attachment of card "{list_size}" "{card_size}" and upload image')
 def click_on_the_attachment_and_upload_image(context, list_size, card_size):
     context.list_card = AddAListCardPage(context.driver)
     directory_path = str(Path().absolute())

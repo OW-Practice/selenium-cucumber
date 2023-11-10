@@ -182,7 +182,6 @@ class AddAListCardPage(SynMethods, AddListLocators, ActionChains):
         self.click_on_description()
         self.click_on_image()
         self.upload_image_in_description(file_path)
-        time.sleep(5)
 
     def verify_the_description_section(self, input_loc):
         loc = (By.XPATH, "//h3[text()='" + input_loc + "']")
@@ -221,12 +220,10 @@ class AddAListCardPage(SynMethods, AddListLocators, ActionChains):
         upload_img = self.wait_until_element_visible(self.upload_loc, self.medium_wait, self.driver)
         self.wait_until_element_clickable(self.upload_loc, self.medium_wait, self.driver)
         upload_img.click()
-        time.sleep(5)
+        time.sleep(3)
         pyperclip.copy(file_path)
         pyautogui.hotkey('ctrl', 'v')
-        time.sleep(5)
         pyautogui.press('enter')
-        time.sleep(3)
 
     def click_on_description(self):
         added_description = self.wait_until_element_visible(self.added_description_text_loc, self.medium_wait,self.driver)

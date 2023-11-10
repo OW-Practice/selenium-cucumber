@@ -27,5 +27,5 @@ Feature: create board in trello application
     Then Validate cards based on list size "1" and card size "1"
     When Click on the card name "1" "1" add "Description" and "Save" in the card details form
     When Click on edit "Edit" update the description save "Save" list size "1" card size "1"
-    When Click on the attachment of card "1" "1" and upload imgage
+    When Click on the attachment of card "1" "1" and upload image
     Then Validate attached image to card "1" "1"
