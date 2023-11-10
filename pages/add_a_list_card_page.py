@@ -1,4 +1,6 @@
 import time
+import pyautogui
+import pyperclip
 from utilities.syn_methods import SynMethods
 from selenium.webdriver.common.by import By
 from locators.add_list_loc import AddListLocators
@@ -154,34 +156,92 @@ class AddAListCardPage(SynMethods, AddListLocators, ActionChains):
         self.wait_until_element_clickable(loc, self.medium_wait, self.driver)
         archive_option.click()
 
-    def click_on_card_and_add_description_to_card(self, list_name, card_value, input_loc, description_input):
+    def click_on_card_and_add_description_to_card(self, list_name, card_value, input_loc, description_value, save):
         self.click_on_current_card(list_name, card_value)
         self.verify_card_details_window()
         self.verify_current_card_name(card_value)
         self.verify_current_list_name(list_name)
         self.verify_the_description_section(input_loc)
-        self.enter_description_input(description_input)
-        self.click_on_save_button()
-        self.verify_added_description(description_input)
+        self.enter_description_input(description_value)
+        self.click_on_save_edit_cancel_buttons(save)
+        self.verify_added_description(description_value)
+        self.click_on_close_window()
+
+    def click_on_card_name_and_update_description(self, list_name, card_value, edit, description_value, save):
+        self.click_on_current_card(list_name, card_value)
+        self.verify_card_details_window()
+        self.click_on_save_edit_cancel_buttons(edit)
+        self.enter_description_input(description_value)
+        self.click_on_save_edit_cancel_buttons(save)
+        self.verify_added_description(description_value)
+        self.click_on_close_window()
+
+    def click_on_attachment_upload_image(self, list_name, card_value, file_path):
+        self.click_on_current_card(list_name, card_value)
+        self.verify_card_details_window()
+        self.click_on_description()
+        self.click_on_image()
+        self.upload_image_in_description(file_path)
 
     def verify_the_description_section(self, input_loc):
         loc = (By.XPATH, "//h3[text()='" + input_loc + "']")
         description = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
         assert description.is_displayed() == True, "description section is not displayed"
 
-    def enter_description_input(self,description_input):
+    def enter_description_input(self,description_value):
         description = self.wait_until_element_visible(self.description_input_loc, self.medium_wait, self.driver)
         self.wait_until_element_clickable(self.description_input_loc, self.medium_wait, self.driver)
         description.click()
         description.clear()
-        description.send_keys(description_input)
+        description.send_keys(description_value)
 
-    def click_on_save_button(self):
-        save_button = self.wait_until_element_visible(self.save_button_loc, self.medium_wait, self.driver)
-        self.wait_until_element_clickable(self.save_button_loc, self.medium_wait, self.driver)
+    def click_on_save_edit_cancel_buttons(self,input):
+        loc = (By.XPATH, "//button[text()='" + input + "']")
+        save_button = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(loc, self.medium_wait, self.driver)
         save_button.click()
 
-    def verify_added_description(self, input):
+    def verify_added_description(self,description_value):
         added_description = self.wait_until_element_visible(self.added_description_text_loc, self.medium_wait, self.driver)
         added_description_text = added_description.text
-        assert added_description_text == input, added_description_text + "text is not matched"
+        assert added_description_text.upper() == description_value.upper(), added_description_text + " text is not matched"
+
+    def click_on_close_window(self):
+        close_window = self.wait_until_element_visible(self.close_window_loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.close_window_loc, self.medium_wait, self.driver)
+        close_window.click()
+
+    def click_on_image(self):
+        upload_img = self.wait_until_element_visible(self.attachment_button_loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.attachment_button_loc, self.medium_wait, self.driver)
+        upload_img.click()
+
+    def upload_image_in_description(self,file_path):
+        upload_img = self.wait_until_element_visible(self.upload_loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.upload_loc, self.medium_wait, self.driver)
+        upload_img.click()
+        time.sleep(3)
+        pyperclip.copy(file_path)
+        pyautogui.hotkey('ctrl', 'v')
+        pyautogui.press('enter')
+
+    def click_on_description(self):
+        added_description = self.wait_until_element_visible(self.added_description_text_loc, self.medium_wait,self.driver)
+        self.wait_until_element_clickable(self.added_description_text_loc, self.medium_wait, self.driver)
+        added_description.click()
+
+    def verify_success_text(self):
+        success = self.wait_until_element_visible(self.success_text_loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.success_text_loc, self.medium_wait, self.driver)
+        assert success.is_displayed() == True, "success text is not displayed"
+
+    def verify_uploaded_image_for_card(self, input):
+        loc = (By.XPATH, "//a[text()='" + input + "']//ancestor::div[@data-testid='trello-card']//div[@data-testid='card-front-cover']")
+        image_to_card = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", image_to_card)
+        assert image_to_card.is_displayed() == True, "image is not attached"
+
+    def click_on_close_btn(self):
+        close_btn = self.wait_until_element_visible(self.close_select_img_pop_up_loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.close_select_img_pop_up_loc, self.medium_wait, self.driver)
+        close_btn.click()
