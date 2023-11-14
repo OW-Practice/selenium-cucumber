@@ -6,6 +6,8 @@ from pathlib import Path
 fake = Faker()
 list_names = []
 total_card_names = []
+total_colors = []
+total_label_names = []
 
 
 @when(u'Create list title "{input}" and validate list name')
@@ -130,8 +132,8 @@ def click_on_the_attachment_and_upload_image(context, list_size, card_size):
             context.list_card.click_on_close_window()
 
 
-@then(u'Validate attached image to card "{list_size}" "{card_size}"')
-def validate_attached_image_to_card(context, list_size, card_size):
+@then(u'Validate attached image to card "{list_size}" "{card_size}" and select color and add label name')
+def validate_attached_image_to_card_select_color_add_label_name(context, list_size, card_size):
     context.list_card = AddAListCardPage(context.driver)
     lists_val = int(list_size)
     cards_val = int(card_size)
@@ -139,5 +141,20 @@ def validate_attached_image_to_card(context, list_size, card_size):
         list_name = list_names[i]
         for j in range(cards_val):
             card_name = total_card_names[i][j]
-            context.list_card.verify_uploaded_image_for_card(card_name)
+            context.list_card.click_on_current_card(list_name, card_name)
+            context.list_card.verify_uploaded_image_for_card()
+            for row in context.table:
+                color = row['color']
+                total_colors.append(color)
+            label_name = fake.name()
+            label_names = label_name + " label"
+            total_label_names.append(label_names)
+            context.list_card.add_color_and_label_name(total_colors[j], label_names)
+            context.list_card.click_on_close_window()
 
+
+@then(u"Validate label name and colors")
+def validate_label_name_and_color(context):
+    context.list_card = AddAListCardPage(context.driver)
+    for i in range(len(total_label_names)):
+        context.list_card.verify_color_name_of_label(total_colors[i], total_label_names[i])

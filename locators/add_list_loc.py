@@ -26,3 +26,13 @@ class AddListLocators:
     upload_loc = (By.CSS_SELECTOR, "label[for='filepicker']")
     success_text_loc = (By.XPATH, "//span[text()='Success']")
     close_select_img_pop_up_loc = (By.XPATH, "(//span[@data-testid='CloseIcon'])[1]")
+    label_icon_loc = (By.CSS_SELECTOR, "[title='Labels'] span[class*='icon']")
+    label_option_loc = (By.CSS_SELECTOR, "[title='Labels'] span+span")
+    label_form_loc = (By.CSS_SELECTOR, "[data-testid*='labels-popover']")
+    label_header_loc = (By.CSS_SELECTOR, "h2[title='Labels']")
+    edit_label_form_loc = (By.CSS_SELECTOR, "[data-testid*='edit-label-screen']")
+    edit_label_header_loc = (By.CSS_SELECTOR, "[title='Edit label']")
+    title_field_loc = (By.CSS_SELECTOR, "p+div input[type='text']")
+    close_label_pop_up_loc = (By.CSS_SELECTOR, "[data-testid='popover-close']")
+    image_loc = (By.CSS_SELECTOR, "div.attachment-thumbnail > a")
+

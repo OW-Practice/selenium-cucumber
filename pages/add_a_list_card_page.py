@@ -27,9 +27,8 @@ class AddAListCardPage(SynMethods, AddListLocators, ActionChains):
 
     def click_on_add_a_card_button(self, input):
         self.driver.refresh()
-        loc = (By.XPATH, "//h2[text()='" + input + "']//ancestor::div[@data-testid='list']//*[contains(@data-testid,"
-                                                   "'add-card')]")
-        add_a_card_button = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
+        loc = (By.XPATH, "//h2[text()='" + input + "']//ancestor::div[@data-testid='list']//*[contains(@data-testid,'add-card')]")
+        add_a_card_button = self.wait_until_element_visible(loc, self.long_wait, self.driver)
         self.wait_until_element_clickable(loc, self.medium_wait, self.driver)
         add_a_card_button.click()
 
@@ -72,8 +71,9 @@ class AddAListCardPage(SynMethods, AddListLocators, ActionChains):
     def click_on_current_card(self, list_name, card_value):
         self.driver.refresh()
         loc = (By.XPATH, "//h2[text()='" + list_name + "']//ancestor::div//a[text()='" + card_value + "']")
-        current_card = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
-        self.wait_until_element_clickable(loc, self.medium_wait, self.driver)
+        current_card = self.wait_until_element_visible(loc, self.long_wait, self.driver)
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", current_card)
+        self.wait_until_element_clickable(loc, self.long_wait, self.driver)
         current_card.click()
 
     def verify_deleted_card_in_list(self, list_name, card_value):
@@ -163,16 +163,16 @@ class AddAListCardPage(SynMethods, AddListLocators, ActionChains):
         self.verify_current_list_name(list_name)
         self.verify_the_description_section(input_loc)
         self.enter_description_input(description_value)
-        self.click_on_save_edit_cancel_buttons(save)
+        self.click_on_buttons(save)
         self.verify_added_description(description_value)
         self.click_on_close_window()
 
     def click_on_card_name_and_update_description(self, list_name, card_value, edit, description_value, save):
         self.click_on_current_card(list_name, card_value)
         self.verify_card_details_window()
-        self.click_on_save_edit_cancel_buttons(edit)
+        self.click_on_buttons(edit)
         self.enter_description_input(description_value)
-        self.click_on_save_edit_cancel_buttons(save)
+        self.click_on_buttons(save)
         self.verify_added_description(description_value)
         self.click_on_close_window()
 
@@ -195,11 +195,11 @@ class AddAListCardPage(SynMethods, AddListLocators, ActionChains):
         description.clear()
         description.send_keys(description_value)
 
-    def click_on_save_edit_cancel_buttons(self,input):
+    def click_on_buttons(self,input):
         loc = (By.XPATH, "//button[text()='" + input + "']")
-        save_button = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
+        button = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
         self.wait_until_element_clickable(loc, self.medium_wait, self.driver)
-        save_button.click()
+        button.click()
 
     def verify_added_description(self,description_value):
         added_description = self.wait_until_element_visible(self.added_description_text_loc, self.medium_wait, self.driver)
@@ -235,13 +235,87 @@ class AddAListCardPage(SynMethods, AddListLocators, ActionChains):
         self.wait_until_element_clickable(self.success_text_loc, self.medium_wait, self.driver)
         assert success.is_displayed() == True, "success text is not displayed"
 
-    def verify_uploaded_image_for_card(self, input):
-        loc = (By.XPATH, "//a[text()='" + input + "']//ancestor::div[@data-testid='trello-card']//div[@data-testid='card-front-cover']")
-        image_to_card = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
-        self.driver.execute_script("arguments[0].scrollIntoView(true);", image_to_card)
+    def verify_uploaded_image_for_card(self):
+        image_to_card = self.wait_until_element_visible(self.image_loc, self.medium_wait, self.driver)
         assert image_to_card.is_displayed() == True, "image is not attached"
 
     def click_on_close_btn(self):
         close_btn = self.wait_until_element_visible(self.close_select_img_pop_up_loc, self.medium_wait, self.driver)
         self.wait_until_element_clickable(self.close_select_img_pop_up_loc, self.medium_wait, self.driver)
         close_btn.click()
+
+    def verify_label_icon(self):
+        label_icon = self.wait_until_element_visible(self.label_icon_loc, self.medium_wait, self.driver)
+        assert label_icon.is_displayed() == True, "label icon is not displayed"
+
+    def verify_label_option(self):
+        label_option = self.wait_until_element_visible(self.label_option_loc, self.medium_wait, self.driver)
+        assert label_option.is_displayed() == True, "label option is not displayed"
+
+    def click_on_label_option(self):
+        label_option = self.wait_until_element_visible(self.label_option_loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.label_option_loc, self.medium_wait, self.driver)
+        label_option.click()
+
+    def verify_label_form(self):
+        label_form = self.wait_until_element_visible(self.label_form_loc, self.medium_wait, self.driver)
+        assert label_form.is_displayed() == True, "label option is not displayed"
+
+    def verify_label_header(self):
+        label_header = self.wait_until_element_visible(self.label_header_loc, self.medium_wait, self.driver)
+        assert label_header.is_displayed() == True, "label option is not displayed"
+
+    def select_color(self, input):
+        loc = (By.CSS_SELECTOR, "ul span[data-color='" + input + "']")
+        select_color = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(loc, self.medium_wait, self.driver)
+        select_color.click()
+
+    def click_on_edit_button(self, input):
+        loc = (By.XPATH, "//span[@data-color='" + input + "']//following-sibling::button//span[@data-testid='EditIcon']")
+        edit_button = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(loc, self.medium_wait, self.driver)
+        edit_button.click()
+
+    def verify_edit_label_form(self):
+        edit_label_form = self.wait_until_element_visible(self.edit_label_form_loc, self.medium_wait, self.driver)
+        assert edit_label_form.is_displayed() == True, "label option is not displayed"
+
+    def verify_edit_label_header(self):
+        edit_label_header = self.wait_until_element_visible(self.edit_label_header_loc, self.medium_wait, self.driver)
+        assert edit_label_header.is_displayed() == True, "label option is not displayed"
+
+    def enter_input_in_title(self, input):
+        title_input = self.wait_until_element_visible(self.title_field_loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.title_field_loc, self.medium_wait, self.driver)
+        title_input.click()
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('delete')
+        title_input.send_keys(input)
+        pyautogui.press('enter')
+
+    def click_on_close_button_of_label_pop_up(self):
+        label_pop_up = self.wait_until_element_visible(self.close_label_pop_up_loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.close_label_pop_up_loc, self.medium_wait, self.driver)
+        label_pop_up.click()
+
+    def verify_color_name_of_label(self, input, label_text):
+        loc = (By.CSS_SELECTOR, "[data-color='" + input + "']")
+        color_name_of_label = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", color_name_of_label)
+        assert color_name_of_label.is_displayed() == True, "color is added under label field"
+        color_name_of_label_text = color_name_of_label.text
+        assert color_name_of_label_text == label_text, color_name_of_label_text + "label text is not matched"
+
+    def add_color_and_label_name(self, color_input, title_input):
+        self.verify_label_icon()
+        self.verify_label_option()
+        self.click_on_label_option()
+        self.verify_label_form()
+        self.verify_label_header()
+        self.select_color(color_input)
+        self.click_on_edit_button(color_input)
+        self.verify_edit_label_form()
+        self.verify_edit_label_header()
+        self.enter_input_in_title(title_input)
+        self.click_on_close_button_of_label_pop_up()
