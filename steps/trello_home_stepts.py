@@ -134,3 +134,10 @@ def validate_work_space_menu_options_should_display(context):
     for row in context.table:
         options = row['menu_options']
         context.home.verify_work_space_menu_options(options)
+
+
+@when(u'Click on "{Log_out}" option in menu bar')
+def validate_work_space_menu_options_should_display(context,Log_out):
+    context.home.verify_log_out_button_in_menu(Log_out)
+    context.home.click_on_log_out_option()
+

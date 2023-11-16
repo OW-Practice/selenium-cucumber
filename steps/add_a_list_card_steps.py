@@ -1,3 +1,5 @@
+import os
+
 from behave import *
 from pages.add_a_list_card_page import AddAListCardPage
 from faker import Faker
@@ -96,7 +98,8 @@ def click_on_the_card_name_and_add_description(context, list_size, card_size, de
             num_words_to_generate = 3
             generated_words = [fake.word() for _ in range(num_words_to_generate)]
             words_as_string = ' '.join(generated_words)
-            context.list_card.click_on_card_and_add_description_to_card(name_of_list, card_name, description, words_as_string, save)
+            context.list_card.click_on_card_and_add_description_to_card(name_of_list, card_name, description,
+                                                                        words_as_string, save)
 
 
 @when(u'Click on edit "{edit}" update the description save "{save}" list size "{list_size}" card size "{card_size}"')
@@ -112,7 +115,7 @@ def click_on_the_card_name_and_update_description(context, edit, save, list_size
             num_words_to_generate = 5
             generated_words = [fake.word() for _ in range(num_words_to_generate)]
             update_string = ' '.join(generated_words)
-            context.list_card.click_on_card_name_and_update_description(list_name, card_name,edit, update_string, save)
+            context.list_card.click_on_card_name_and_update_description(list_name, card_name, edit, update_string, save)
 
 
 @when(u'Click on the attachment of card "{list_size}" "{card_size}" and upload image')
@@ -158,3 +161,77 @@ def validate_label_name_and_color(context):
     context.list_card = AddAListCardPage(context.driver)
     for i in range(len(total_label_names)):
         context.list_card.verify_color_name_of_label(total_colors[i], total_label_names[i])
+
+
+@when(u'Create lists "{input}" "{filename}" and validate lists')
+def create_list_title_validate_list_name(context, input, filename):
+    context.list_card = AddAListCardPage(context.driver)
+    file_path = os.path.join(os.getcwd(), "resources")
+    context.filename = filename
+    context.listfilepath = os.path.join(file_path, filename)
+    value = int(input)
+    with open(context.listfilepath, 'w') as file:
+        file.write('')
+    for i in range(value):
+        name = fake.name()
+        with open(context.listfilepath, 'a') as file:
+            file.write(f'{name}\n')
+    with open(context.listfilepath, 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            name = line.strip()
+            context.list_card.enter_list_title(name)
+            context.list_card.click_on_add_a_list_button()
+            context.list_card.verify_added_list_name(name)
+
+
+@when(u'Create cards "{list_size}" "{card_size}" "{filename}" and enter card names')
+def click_on_add_a_card_button_enter_card_name(context, list_size, card_size, filename):
+    context.list_card = AddAListCardPage(context.driver)
+    list_val = int(list_size)
+    cards_val = int(card_size)
+    file_path = os.path.join(os.getcwd(), "resources")
+    context.filename = filename
+    context.cardfilepath = os.path.join(file_path, filename)
+
+    with open(context.cardfilepath, 'w') as file:
+        file.write('')
+
+    for i in range(list_val * cards_val):
+        card_name = fake.name()
+        with open(context.cardfilepath, 'a') as file:
+            file.write(f'{card_name}\n')
+
+    with open(context.listfilepath, 'r') as file:
+        list_names = file.readlines()
+
+    for i in range(list_val):
+        current_list = list_names[i].strip()
+        context.list_card.click_on_add_a_card_button(current_list)
+
+        with open(context.cardfilepath, 'r') as file:
+            card_names = file.readlines()
+            batch_card_names = card_names[i * cards_val: (i + 1) * cards_val]
+
+            for card_name in batch_card_names:
+                name_card = card_name.strip()
+                context.list_card.enter_card_name(name_card)
+                context.list_card.click_on_add_card_button()
+
+
+@then(u'Validate cards "{card_size}" based on lists "{list_size}"')
+def validate_created_cards_under_lists(context, card_size, list_size):
+    context.list_card = AddAListCardPage(context.driver)
+    cards_val = int(card_size)
+    list_val = int(list_size)
+    with open(context.listfilepath, 'r') as file:
+        list_names = file.readlines()
+    for i in range(list_val):
+        current_list = list_names[i].strip()
+        with open(context.cardfilepath, 'r') as file:
+            card_names = file.readlines()
+            batch_card_names = card_names[i * cards_val: (i + 1) * cards_val]
+
+            for card_name in batch_card_names:
+                name_card = card_name.strip()
+                context.list_card.verify_card_name(current_list, name_card)

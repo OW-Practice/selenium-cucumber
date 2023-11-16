@@ -100,3 +100,9 @@ Feature: create board in trello application
     When Click on delete button
     Then Validate board deleted pop up should displayed in the home page.
     Then Validate delete random board name should not display in your work space section
+    When Click on profile button "Amrutha"
+    When Click on "Log out" option in menu bar
+    Then Validate "Log out of your Atlassian account" header
+    Then Validate "Amrutha Dasireddy" and "amrutha.dasireddy@optimworks.com"
+    When Click on log out button
+    Then Validate login in link in home page
