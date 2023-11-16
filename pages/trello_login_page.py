@@ -51,3 +51,30 @@ class TrelloLoginPage(SynMethods,TrelloLoginLocators):
         log_in_button = self.wait_until_element_visible(self.log_in_button_loc, self.long_wait, self.driver)
         self.wait_until_element_visible(self.log_in_button_loc, self.long_wait, self.driver)
         log_in_button.click()
+
+    def verify_atlassian_header_in_home_page(self, input):
+        atlassian_header = self.wait_until_element_visible(self.log_out_header_loc, self.medium_wait, self.driver)
+        assert atlassian_header.is_displayed() == True, "atlassian_header is not displayed"
+        atlassian_header_text = atlassian_header.text
+        assert atlassian_header_text == input,  atlassian_header_text + "header is not matched"
+
+    def verify_user_name(self, input):
+        user_name = self.wait_until_element_visible(self.user_name_loc, self.medium_wait, self.driver)
+        assert user_name.is_displayed() == True, "atlassian_header is not displayed"
+        user_name_text = user_name.text
+        assert user_name_text == input,  user_name_text + "header is not matched"
+
+    def verify_email_in_home_page(self, input):
+        email = self.wait_until_element_visible(self.e_mail_address_loc, self.medium_wait, self.driver)
+        assert email.is_displayed() == True, "atlassian_header is not displayed"
+        email_text = email.text
+        assert email_text == input,  email_text + "header is not matched"
+
+    def click_on_log_out_button(self):
+        log_out_button = self.wait_until_element_visible(self.log_out_button_loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.log_out_button_loc, self.medium_wait, self.driver)
+        log_out_button.click()
+
+    def verify_log_in_link(self):
+        log_in_link = self.wait_until_element_visible(self.log_in_link_loc, self.long_wait, self.driver)
+        assert log_in_link.is_displayed() == True, "login link is not displayed"

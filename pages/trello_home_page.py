@@ -106,3 +106,15 @@ class TrelloHomePage(SynMethods, TrelloHomeLocators):
         loc = (By.XPATH, "//li[contains(@data-testid,'home-team')] //ul //span[text()='" + input + "']")
         menu_options = self.wait_until_element_visible(loc, self.long_wait, self.driver)
         assert menu_options.is_displayed() == True, "menu options are not displayed"
+
+    def verify_log_out_button_in_menu(self, input):
+        log_out = self.wait_until_element_visible(self.log_out_button_loc, self.medium_wait, self.driver)
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", log_out)
+        assert log_out.is_displayed() == True, "log out option is not displayed in menu"
+        log_out_text = log_out.text
+        assert log_out_text == input, log_out_text + " text is not matched"
+
+    def click_on_log_out_option(self):
+        log_out = self.wait_until_element_visible(self.log_out_button_loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.log_out_button_loc, self.medium_wait, self.driver)
+        log_out.click()

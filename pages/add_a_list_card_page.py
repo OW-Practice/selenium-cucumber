@@ -21,7 +21,7 @@ class AddAListCardPage(SynMethods, AddListLocators, ActionChains):
         add_a_list_button.click()
 
     def enter_list_title(self, input):
-        time.sleep(7)
+        time.sleep(3)
         list_title = self.wait_until_element_visible(self.list_title_loc, self.medium_wait, self.driver)
         list_title.send_keys(input)
 

@@ -12,5 +12,6 @@ class TrelloHomeLocators:
     close_button_loc = (By.CSS_SELECTOR, "[value='Close']")
     pop_over_content_loc = (By.CSS_SELECTOR, "div.pop-over-content p")
     work_space_loc = (By.XPATH, "//div[text()='Workspaces']")
+    log_out_button_loc = (By.CSS_SELECTOR, "[data-testid=account-menu-logout] span")
 
 
