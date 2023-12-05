@@ -1,6 +1,6 @@
 import os
-
 from behave import *
+from openpyxl.workbook import Workbook
 from pages.add_a_list_card_page import AddAListCardPage
 from faker import Faker
 from pathlib import Path
@@ -235,3 +235,31 @@ def validate_created_cards_under_lists(context, card_size, list_size):
             for card_name in batch_card_names:
                 name_card = card_name.strip()
                 context.list_card.verify_card_name(current_list, name_card)
+
+
+@when(u'Create lists "{list_size}" "{listfilename}" validate added lists')
+def create_list_title_validate_list_name(context, list_size, listfilename):
+    context.list_card = AddAListCardPage(context.driver)
+    file_path = os.path.join(os.getcwd(), "resources")
+    context.filename = listfilename
+    context.listfilepath = os.path.join(file_path, listfilename)
+    list_value = int(list_size)
+
+    wb = Workbook()
+    ws = wb.active
+    ws.delete_cols(1, ws.max_column)
+    ws['A1'] = 'List Names'
+    for i in range(2, list_value + 2):
+        name = fake.name()
+        ws.cell(row=i, column=1, value=name)
+    wb.save(context.listfilepath)
+    names_list = []
+    for row in ws.iter_rows(min_row=2, max_col=1, max_row=list_value + 1, values_only=True):
+        for cell_value in row:
+            if cell_value:
+                names_list.append(cell_value)
+    for names in names_list:
+        list_name = names
+        context.list_card.enter_list_title(list_name)
+        context.list_card.click_on_add_a_list_button()
+        context.list_card.verify_added_list_name(list_name)
