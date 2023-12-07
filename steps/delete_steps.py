@@ -14,6 +14,12 @@ def validate_board_name_is_closed_text_is_displayed(context):
     context.delete.verify_board_is_closed_text(context.name)
 
 
+@then(u"Validate board name is closed text is displayed in the delete board page")
+def validate_board_names_is_closed_text_is_displayed(context):
+    context.delete = DeletePage(context.driver)
+    context.delete.verify_board_is_closed_text(context.board_names[0])
+
+
 @then(u'Validate "{input}" button is displayed in the Delete boards page.')
 def validate_re_open_board_button_is_displayed(context,input):
     context.delete = DeletePage(context.driver)

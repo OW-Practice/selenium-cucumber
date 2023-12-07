@@ -7,6 +7,7 @@ from pathlib import Path
 
 fake = Faker()
 list_names = []
+list_names_1 = []
 total_card_names = []
 total_colors = []
 total_label_names = []
@@ -22,6 +23,24 @@ def create_list_title_validate_list_name(context, input):
         context.list_card.enter_list_title(name)
         context.list_card.click_on_add_a_list_button()
         context.list_card.verify_added_list_name(name)
+
+
+@when(u'Create list name "{input}" and validate list name')
+def create_list_title_validate_list_name(context, input):
+    context.list_card = AddAListCardPage(context.driver)
+    value = int(input)
+    for i in range(value):
+        list_name = fake.name()
+        list_names_1.append(list_name)
+        context.list_card.enter_list_title(list_name)
+        context.list_card.click_on_add_a_list_button()
+        context.list_card.verify_added_list_name(list_name)
+
+
+@then(u"Validate added list names")
+def validate_list_name(context):
+    context.list_card = AddAListCardPage(context.driver)
+    context.list_card.verify_added_list_name(list_names[0])
 
 
 @when(u'Create card with list size "{list_size}" and card size "{card_size}" and enter card name')
@@ -235,3 +254,52 @@ def validate_created_cards_under_lists(context, card_size, list_size):
             for card_name in batch_card_names:
                 name_card = card_name.strip()
                 context.list_card.verify_card_name(current_list, name_card)
+
+
+@when(u'Click on card name "{card_size}" and "{move}" to list')
+def click_on_card_name_move_to_list(context, card_size, move):
+    context.list_card = AddAListCardPage(context.driver)
+    cards_val = int(card_size)
+    name = context.name
+    for j in range(cards_val):
+        card_name = total_card_names[0][j]
+        context.list_card.click_on_current_card(list_names[0], card_name)
+        context.list_card.move_cards_from_one_list_to_another_list(card_name, list_names[0], move, name, list_names[1])
+
+
+@when(u'Click on card name "{card_size}" and "{move}" to list in another board')
+def click_on_card_name_move_to_list(context, card_size, move):
+    context.list_card = AddAListCardPage(context.driver)
+    cards_val = int(card_size)
+    for j in range(cards_val):
+        card_name = total_card_names[0][j]
+        context.list_card.click_on_current_card(list_names[0], card_name)
+        context.list_card.move_cards_from_one_board_to_another_board(card_name, list_names[0], move, context.board_names[0])
+
+
+@then(u'Validate card names "{card_size}" in new list')
+def verify_card_names_in_another_list(context, card_size):
+    context.list_card = AddAListCardPage(context.driver)
+    cards_val = int(card_size)
+    for j in range(cards_val):
+        card = total_card_names[0][j]
+        context.list_card.verify_card_name(list_names[1], card)
+    total_card_names.clear()
+    list_names.clear()
+
+
+@then(u'Validate card names "{card_size}" in list of another board')
+def verify_the_card_names_in_another_list(context, card_size):
+    context.list_card = AddAListCardPage(context.driver)
+    cards_val = int(card_size)
+    for j in range(cards_val):
+        card = total_card_names[0][j]
+        context.list_card.verify_the_board_name(context.board_names[0])
+        context.list_card.verify_card_name(list_names_1[0], card)
+
+
+@when(u'Click on edit "{List_actions}" and "{Move_list}"')
+def click_on_card_name_move_to_list(context, List_actions, Move_list):
+    context.list_card = AddAListCardPage(context.driver)
+    board = context.board_names
+    context.list_card.click_on_edit_and_move_list(list_names[0], List_actions, Move_list, board[0])

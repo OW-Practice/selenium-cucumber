@@ -35,4 +35,6 @@ class AddListLocators:
     title_field_loc = (By.CSS_SELECTOR, "p+div input[type='text']")
     close_label_pop_up_loc = (By.CSS_SELECTOR, "[data-testid='popover-close']")
     image_loc = (By.CSS_SELECTOR, "div.attachment-thumbnail > a")
-
+    form_header_loc = (By.CSS_SELECTOR, "span[class*='header-title']")
+    move_list_option_loc = (By.CSS_SELECTOR, "a[class*='move-list']")
+    board_name_loc = (By.CSS_SELECTOR, "[data-testid*='board-name-display']")
