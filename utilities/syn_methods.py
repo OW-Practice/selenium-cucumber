@@ -23,9 +23,9 @@ class SynMethods:
         webdriver_wait = WebDriverWait(driver, timeout)
         return webdriver_wait.until(EC.element_to_be_clickable(loc))
 
-    def wait_until_text_present(self, loc, timeout, driver):
+    def wait_until_text_present(self, loc, timeout, driver, text):
         webdriver_wait = WebDriverWait(driver, timeout)
-        return webdriver_wait.until(EC.text_to_be_present_in_element(loc))
+        return webdriver_wait.until(EC.text_to_be_present_in_element(loc, text))
 
     def visibility_of_element_located(self, loc, timeout, driver):
         webdriver_wait = WebDriverWait(driver, timeout)
