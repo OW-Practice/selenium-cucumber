@@ -99,3 +99,13 @@ Feature: create board in trello application
     When Click on delete button
     Then Validate board deleted pop up should displayed in the home page.
     Then Validate delete random board name should not display in your work space section
+
+  Scenario: Adding and verifying list and cards using excel
+    When Click on the "Create" button in home page.
+    Then Validate create form
+    When Click on the "Create board" button in create form
+    Then Validate create board header
+    When Enter random board name in create board form
+    When Click on create button in create board form
+    Then Validate randomly created board name is displayed
+    When Create lists "2" "list_names.xlsx" validate added lists
