@@ -42,8 +42,20 @@ class CreateBoardPage(SynMethods,CreateBoardLocators):
         create_button.click()
 
     def verify_created_board_name(self,input):
-        time.sleep(3)
         created_board_name = self.wait_until_element_visible(self.board_name_loc, self.long_wait, self.driver)
         assert created_board_name.is_displayed() == True, "board name is not displayed"
         created_board_name_text = created_board_name.text
         assert created_board_name_text == input, created_board_name_text + "created board name is not matched"
+
+    def click_on_add_board_icon(self):
+        time.sleep(3)
+        self.driver.refresh()
+        add_board_icon = self.wait_until_element_visible(self.add_board_icon_loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.add_board_icon_loc, self.medium_wait, self.driver)
+        add_board_icon.click()
+
+    def click_on_board_name(self, input):
+        loc = (By.XPATH, "//a[text()='"+input+"']")
+        board_name = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(loc, self.medium_wait, self.driver)
+        board_name.click()

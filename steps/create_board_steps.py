@@ -2,6 +2,7 @@ from behave import *
 from pages.create_board_page import CreateBoardPage
 from faker import Faker
 fake = Faker()
+board_names = []
 
 
 @when(u'Click on the "{input}" button in home page.')
@@ -39,7 +40,35 @@ def enter_random_board_name(context):
     context.create = CreateBoardPage(context.driver)
     name = fake.name()
     context.name = name
-    context.create.enter_board_name(name)
+    context.create.enter_board_name(context.name)
+
+
+@when(u"Enter 1st board name in create board form")
+def enter_random_board_names(context):
+    context.create = CreateBoardPage(context.driver)
+    for i in range(2):
+        name = fake.name()
+        board_name = name
+        context.board_names.append(board_name)
+    context.create.enter_board_name(context.board_names[0])
+
+
+@when(u"Enter 2nd board name in create board form")
+def enter_random_board_names(context):
+    context.create = CreateBoardPage(context.driver)
+    context.create.enter_board_name(context.board_names[1])
+
+
+@when(u"Click on add board icon")
+def click_on_add_board_icon(context):
+    context.create = CreateBoardPage(context.driver)
+    context.create.click_on_add_board_icon()
+
+
+@when(u"Click on board name")
+def click_on_1st_board_name(context):
+    context.create = CreateBoardPage(context.driver)
+    context.create.click_on_board_name(context.board_names[0])
 
 
 @when(u"Click on create button in create board form")

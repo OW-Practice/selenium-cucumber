@@ -122,6 +122,12 @@ def validate_delete_board_name_in_your_work_space_section(context):
     context.home.verify_deleted_board_name_should_not_display(context.name)
 
 
+@then(u"Validate delete board name should not display in your work space section")
+def validate_delete_board_names_in_your_work_space_section(context):
+    context.home = TrelloHomePage(context.driver)
+    context.home.verify_deleted_board_name_should_not_display(context.board_names[0])
+
+
 @then(u"Validate work space section should displayed in trello home page.")
 def validate_work_space_section_is_displayed(context):
     context.home = TrelloHomePage(context.driver)

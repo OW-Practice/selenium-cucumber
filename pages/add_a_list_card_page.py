@@ -5,9 +5,11 @@ from utilities.syn_methods import SynMethods
 from selenium.webdriver.common.by import By
 from locators.add_list_loc import AddListLocators
 from selenium.webdriver.common.action_chains import ActionChains
+from locators.move_card_loc import MoveCard
+from selenium.webdriver.support.ui import Select
 
 
-class AddAListCardPage(SynMethods, AddListLocators, ActionChains):
+class AddAListCardPage(SynMethods, AddListLocators, ActionChains, MoveCard, Select):
     def __init__(self, driver):
         super().__init__(driver)
 
@@ -319,3 +321,105 @@ class AddAListCardPage(SynMethods, AddListLocators, ActionChains):
         self.verify_edit_label_header()
         self.enter_input_in_title(title_input)
         self.click_on_close_button_of_label_pop_up()
+
+    def verify_move_option(self):
+        move_option = self.wait_until_element_visible(self.move_button_loc, self.medium_wait, self.driver)
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", move_option)
+        assert move_option.is_displayed() == True, "move option is not present"
+
+    def click_on_move_option(self):
+        move_option = self.wait_until_element_visible(self.move_button_loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.move_button_loc, self.medium_wait, self.driver)
+        move_option.click()
+
+    def verify_move_card_form(self):
+        move_card_form = self.wait_until_element_visible(self.move_card_form_loc, self.medium_wait, self.driver)
+        assert move_card_form.is_displayed() == True, "move option is not present"
+
+    def verify_move_card_header(self, input):
+        move_card_header = self.wait_until_element_visible(self.move_card_form_loc, self.medium_wait, self.driver)
+        assert move_card_header.is_displayed() == True, "move option is not present"
+        move_card_header_text = move_card_header.text
+        assert move_card_header_text.__contains__(input) == True, move_card_header_text + "text is not matched"
+
+    def verify_board_name(self, input):
+        board_name = self.wait_until_element_visible(self.board_name_text_loc, self.medium_wait, self.driver)
+        assert board_name.is_displayed() == True, "move option is not present"
+        board_name_text = board_name.text
+        assert board_name_text.__contains__(input) == True, board_name_text + "text is not matched"
+
+    def verify_list_name(self, input):
+        list_name = self.wait_until_element_visible(self.list_name_text_loc, self.medium_wait, self.driver)
+        assert list_name.is_displayed() == True, "move option is not present"
+        list_name_text = list_name.text
+        assert list_name_text.__contains__(input) == True, list_name_text + "text is not matched"
+
+    def click_on_list(self,input):
+        dropdown = self.driver.find_element(By.CSS_SELECTOR, "[class='js-select-list']")
+        select = Select(dropdown)
+        select.select_by_visible_text(input)
+
+    def select_board(self,input):
+        dropdown = self.driver.find_element(By.CSS_SELECTOR, "[class*='select-board']")
+        select = Select(dropdown)
+        select.select_by_visible_text(input)
+
+    def click_on_move_button(self):
+        list_name = self.wait_until_element_visible(self.move_button, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.move_button, self.medium_wait, self.driver)
+        list_name.click()
+
+    def move_cards_from_one_list_to_another_list(self, card_name, list_name, move, board, list):
+        self.verify_card_details_window()
+        self.verify_current_card_name(card_name)
+        self.verify_current_list_name(list_name)
+        self.verify_move_option()
+        self.click_on_move_option()
+        self.verify_move_card_form()
+        self.verify_move_card_header(move)
+        self.verify_board_name(board)
+        self.verify_list_name(list_name)
+        self.click_on_list(list)
+        self.click_on_move_button()
+        self.click_on_close_window()
+
+    def click_on_edit_button_of_list(self, input):
+        loc = (By.XPATH, "//textarea[@aria-label='"+input+"']//parent::div//following-sibling::button")
+        edit_button = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(loc, self.medium_wait, self.driver)
+        edit_button.click()
+
+    def click_on_move_list(self):
+        move_list = self.wait_until_element_visible(self.move_list_option_loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.move_list_option_loc, self.medium_wait, self.driver)
+        move_list.click()
+
+    def verify_form_header(self, input):
+        header = self.wait_until_element_visible(self.form_header_loc, self.medium_wait, self.driver)
+        header_text = header.text
+        assert header_text == input, header_text + "text is not matched"
+
+    def verify_the_board_name(self, input):
+        time.sleep(3)
+        board_name = self.wait_until_element_visible(self.board_name_loc, self.medium_wait, self.driver)
+        board_name_text = board_name.text
+        assert board_name_text.__contains__(input) == True, board_name_text + "board name is not matched"
+
+    def click_on_edit_and_move_list(self, list_name, actions, move, board):
+        self.click_on_edit_button_of_list(list_name)
+        self.verify_form_header(actions)
+        self.click_on_move_list()
+        self.verify_form_header(move)
+        self.select_board(board)
+        self.click_on_move_button()
+
+    def move_cards_from_one_board_to_another_board(self, card_name, list_name, move, board):
+        self.verify_card_details_window()
+        self.verify_current_card_name(card_name)
+        self.verify_current_list_name(list_name)
+        self.verify_move_option()
+        self.click_on_move_option()
+        self.verify_move_card_form()
+        self.verify_move_card_header(move)
+        self.select_board(board)
+        self.click_on_move_button()

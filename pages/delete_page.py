@@ -63,6 +63,3 @@ class DeletePage(DeleteBoardLoc, SynMethods):
     def verify_delete_board_text(self):
         delete_board = self.wait_until_element_visible(self.delete_board_text_loc, self.long_wait, self.driver)
         assert delete_board.is_displayed() == True, "delete board is not displayed"
-
-
-

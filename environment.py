@@ -14,6 +14,10 @@ def before_all(context):
     context.driver.maximize_window()
 
 
+def before_scenario(context, scenario):
+    context.board_names = []
+
+
 def after_step(context, step):
     if step.status == "failed":
         screenshot_dir = os.path.join(os.getcwd(), "screenshots")
