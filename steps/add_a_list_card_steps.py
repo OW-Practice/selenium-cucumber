@@ -331,3 +331,59 @@ def create_list_title_validate_list_name(context, list_size, listfilename):
         context.list_card.enter_list_title(list_name)
         context.list_card.click_on_add_a_list_button()
         context.list_card.verify_added_list_name(list_name)
+
+
+@when(u'Click on "{data}" add template')
+def click_on_card_template_add_template(context, data):
+    context.list_card = AddAListCardPage(context.driver)
+    context.list_card.click_on_template_button(list_names[0])
+    context.list_card.verify_card_template_header(data)
+    context.list_card.click_on_crate_new_template_button()
+    name = fake.name()
+    context.template_name = "template" + name
+    context.list_card.enter_template_title(context.template_name)
+    context.list_card.click_on_add_button()
+
+
+@then(u"Validate template name in form")
+def validate_template_name_in_template_card_form(context):
+    context.list_card = AddAListCardPage(context.driver)
+    context.list_card.verify_template_card_name()
+
+
+@when(u'Click on create card button and verify "{card_templates}" form')
+def click_on_card_template_add_template(context, card_templates):
+    context.list_card = AddAListCardPage(context.driver)
+    context.list_card.click_on_create_card_from_template_button()
+    context.list_card.verify_create_card_from_template_header(card_templates)
+
+
+@then(u"Validate card name")
+def validate_card_name(context):
+    context.list_card = AddAListCardPage(context.driver)
+    context.list_card.verify_card_from_template_textarea(context.template_name)
+
+
+@when(u"Click on create card button")
+def click_on_crate_card_button(context):
+    context.list_card = AddAListCardPage(context.driver)
+    context.list_card.click_on_create_card_button()
+
+
+@when(u"Click on template card name under list")
+def click_on_template_card_under_lists(context):
+    context.list_card = AddAListCardPage(context.driver)
+    context.list_card.click_on_template_card_name(context.template_name)
+
+
+@when(u"Click on hide from list button")
+def click_on_hide_from_list(context):
+    context.list_card = AddAListCardPage(context.driver)
+    context.list_card.click_on_hide_from_list_button()
+    context.list_card.click_on_close_window()
+
+
+@then(u"Validate card name under list")
+def validate_card_name_under_list(context):
+    context.list_card = AddAListCardPage(context.driver)
+    context.list_card.verify_template_card_name_under_list(context.template_name)

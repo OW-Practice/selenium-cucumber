@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 
 
-class MoveCard:
+class MoveCardLoc:
     move_button_loc = (By.CSS_SELECTOR, "[title='Move'] span+span")
     move_card_form_loc = (By.CSS_SELECTOR, "[class='no-back']")
     move_card_header_loc = (By.CSS_SELECTOR, "span[class*='header-title']")

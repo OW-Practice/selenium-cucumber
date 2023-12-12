@@ -5,11 +5,12 @@ from utilities.syn_methods import SynMethods
 from selenium.webdriver.common.by import By
 from locators.add_list_loc import AddListLocators
 from selenium.webdriver.common.action_chains import ActionChains
-from locators.move_card_loc import MoveCard
+from locators.move_card_loc import MoveCardLoc
 from selenium.webdriver.support.ui import Select
+from locators.template_card_loc import TemplateCardsLoc
 
 
-class AddAListCardPage(SynMethods, AddListLocators, ActionChains, MoveCard, Select):
+class AddAListCardPage(SynMethods, AddListLocators, ActionChains, MoveCardLoc, Select,TemplateCardsLoc):
     def __init__(self, driver):
         super().__init__(driver)
 
@@ -95,7 +96,7 @@ class AddAListCardPage(SynMethods, AddListLocators, ActionChains, MoveCard, Sele
 
     def verify_current_card_name(self, name):
         current_card_name = self.wait_until_element_visible(self.current_card_name_loc, self.medium_wait, self.driver)
-        current_card_name_text = current_card_name.get_attribute("value")
+        current_card_name_text = current_card_name.text
         assert current_card_name_text == name, current_card_name_text + "card name is not matched"
 
     def verify_current_list_name(self, name):
@@ -126,7 +127,7 @@ class AddAListCardPage(SynMethods, AddListLocators, ActionChains, MoveCard, Sele
 
     def verify_delete_header(self, header):
         delete_header = self.wait_until_element_visible(self.delete_header_loc, self.medium_wait, self.driver)
-        delete_header_text = delete_header.text
+        delete_header_text = delete_header.get_attribute("value")
         assert delete_header_text == header, delete_header_text + "header is not matched"
 
     def verify_delete_content(self, content):
@@ -423,3 +424,77 @@ class AddAListCardPage(SynMethods, AddListLocators, ActionChains, MoveCard, Sele
         self.verify_move_card_header(move)
         self.select_board(board)
         self.click_on_move_button()
+
+    def click_on_template_button(self, list):
+        self.driver.refresh()
+        loc = (By.XPATH, "//h2[text()='"+list+"']//ancestor::div[@data-testid='list']//button[contains(@data-testid,'template')]")
+        template_button = self.wait_until_element_visible(loc, self.long_wait, self.driver)
+        self.wait_until_element_clickable(loc, self.long_wait, self.driver)
+        template_button.click()
+        time.sleep(5)
+
+    def verify_card_template_header(self, input_text):
+        card_template = self.wait_until_element_visible(self.card_template_header_loc, self.long_wait, self.driver)
+        card_template_text = card_template.text
+        assert card_template_text == input_text, card_template_text + " header is not matched"
+
+    def click_on_crate_new_template_button(self):
+        crate_new_template_button = self.wait_until_element_visible(self.create_a_new_template_button_loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.create_a_new_template_button_loc, self.medium_wait, self.driver)
+        crate_new_template_button.click()
+
+    def enter_template_title(self, title):
+        template_title = self.wait_until_element_visible(self.template_title_input_loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.template_title_input_loc, self.medium_wait, self.driver)
+        template_title.send_keys(title)
+
+    def click_on_add_button(self):
+        add_button = self.wait_until_element_visible(self.add_button_loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.add_button_loc, self.medium_wait, self.driver)
+        add_button.click()
+
+    def verify_template_card_name(self):
+        time.sleep(5)
+        template_card_name = self.wait_until_element_presence(self.created_template_name_text_loc, self.medium_wait, self.driver)
+        assert template_card_name.is_displayed() == True, "text is not displayed"
+        self.click_on_close_window()
+
+    def click_on_create_card_from_template_button(self):
+        create_card_from_template_button = self.wait_until_element_visible(self.create_card_from_template_button_loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.create_card_from_template_button_loc, self.medium_wait, self.driver)
+        create_card_from_template_button.click()
+
+    def verify_create_card_from_template_header(self, input_text):
+        create_card_from_template = self.wait_until_element_visible(self.create_card_from_template_header_loc, self.medium_wait, self.driver)
+        create_card_from_template_text = create_card_from_template.text
+        assert create_card_from_template_text == input_text, create_card_from_template_text + " header is not matched"
+
+    def verify_card_from_template_textarea(self, input_text):
+        card_from_template_textarea = self.wait_until_element_visible(self.card_title_textarea_loc, self.medium_wait, self.driver)
+        card_from_template_textarea_text = card_from_template_textarea.text
+        assert card_from_template_textarea_text == input_text, card_from_template_textarea_text + " header is not matched"
+        self.wait_until_element_visible(self.card_title_textarea_loc, self.medium_wait, self.driver)
+        card_from_template_textarea.click()
+        card_from_template_textarea.send_keys(" card")
+
+    def click_on_create_card_button(self):
+        create_card_button = self.wait_until_element_visible(self.crate_card_button_loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(self.crate_card_button_loc, self.medium_wait, self.driver)
+        create_card_button.click()
+
+    def click_on_template_card_name(self, input):
+        loc = (By.XPATH, "//a[text()='"+input+"']")
+        card_name = self.wait_until_element_visible(loc, self.medium_wait, self.driver)
+        self.wait_until_element_clickable(loc, self.medium_wait, self.driver)
+        card_name.click()
+
+    def click_on_hide_from_list_button(self):
+        hide_from_list_button = self.wait_until_element_visible(self.hide_from_list_button_loc, self.medium_wait, self.driver)
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", hide_from_list_button)
+        self.wait_until_element_clickable(self.hide_from_list_button_loc, self.medium_wait, self.driver)
+        hide_from_list_button.click()
+
+    def verify_template_card_name_under_list(self, input):
+        loc = (By.XPATH, "//a[text()='" + input + "']")
+        template_card_name = self.is_Element_invisible(loc, self.medium_wait, self.driver)
+        assert template_card_name == True, "card is not hide from the list"
